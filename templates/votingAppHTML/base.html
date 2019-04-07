@@ -1,0 +1,170 @@
+{% load static %}
+<style>
+    * {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: "Helvetica Neue", sans-serif;
+    background-color: #d7cfc6;
+}
+
+body {
+    margin: 0px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 100px 1fr 100px 1fr 1fr 100px;
+    grid-gap: 20px;
+}
+
+.header {
+    background-color: #282828;
+    grid-column: 1 / -1;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.aside {
+    grid-column: 2 / 3;
+    padding: 20px;
+}
+
+.aside h2 {
+    text-align: center;
+}
+
+.aside ul {
+    background-color: white;
+    margin: 20px;
+    padding: 20px;
+    font-weight: 600;
+}
+
+.intro {
+    grid-column: 1 / -1;
+    margin: 20px;
+    padding: 20px;
+    font-size: 1.25em;
+}
+
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    grid-column: 1 / -1;
+    padding: 10px;
+    text-align: center;
+}
+
+.form {
+    grid-column: 4 / span 2;
+    padding: 20px;
+    text-align: center;
+}
+
+.form form {
+    margin-bottom: 20px;
+}
+
+.form .subgrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+}
+
+.form .subgrid div {
+    background-color: white;
+    padding: 20px;
+}
+
+.form label {
+    font-weight: 600;
+}
+
+.form button {
+    font-size: 1em;
+    font-weight: 900;
+    padding: 10px;
+    border-radius: 2em;
+    background-color: white;
+}
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        {% block title %}
+            title is provided by inheriting templates
+        {% endblock %}
+    </title>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">#}
+    <link rel="stylesheet" type="text/css" href="https://cpanel.ischool.illinois.edu/~adryden3/css.css">
+</head>
+
+<body>
+
+{#<div><!-- start of container -->#}
+{#    <header>#}
+{#        <h1 class="">Pritzker Literary Award</h1>#}
+{#        <h2>Committee Members Site</h2>#}
+{#    </header>#}
+{#    <nav>#}
+{#        <ul>#}
+{#            <li>#}
+{#                <a href="">#}
+{#                    All Candidates</a></li>#}
+{#            <li>#}
+{#                <a href="">#}
+{#                    My Selections</a></li>#}
+{#            <li>#}
+{#                <a href="">#}
+{#                    /Judges/</a></li>#}
+{#            <li>#}
+{#                <a href="">#}
+{#                    /Needs to Votes/</a></li>#}
+{#        </ul>#}
+{#    </nav>#}
+
+    <main>
+        <div class="grid">
+            <div class="header">
+                <header><h1>Pritzker Military Museum and Library</h1></header>
+            </div>
+    {% block content %}
+            This is default content!
+        {% endblock %}
+        </div>
+    </main>
+{#</div><!-- end of container -->#}
+
+{#<footer>#}
+{#    <p>#}
+{#        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">#}
+{#            <img alt="Creative Commons License" style="border-width:0"#}
+{#                 src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"/>#}
+{#        </a><br/><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Pritzker Military Museum &#}
+{#        Library Literary Prize Voting System</span>#}
+{#        by#}
+{#        <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.ligent.net" property="cc:attributionName"#}
+{#           rel="cc:attributionURL">Name TBD, INC</a> are licensed under a#}
+{#        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike#}
+{#            4.0 International License</a>.#}
+{#    </p>#}
+{#</footer>#}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
+

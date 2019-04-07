@@ -1,0 +1,35 @@
+{% extends 'votingAppHTML/base.html' %}
+
+{% block title %}
+    Candidate - {{ candidate }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ candidate }}</h2>
+
+    <section>
+        <table>
+            <tr>
+                <th>First Name:</th>
+                <td>{{ candidate.author.author_first_name }}</td>
+            </tr>
+            <tr>
+                <th>Last Name:</th>
+                <td>{{ candidate.author.author_last_name }}</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h3>Author Scores (avg: {{ avg }} ) </h3>
+        <ul>
+            {% for score in score_list %}
+                <li>
+                    {{ score }}
+                </li>
+            {% empty %}
+                <li><em>There are currently no scores for this author.</em></li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}

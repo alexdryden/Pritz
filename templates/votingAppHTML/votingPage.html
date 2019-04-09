@@ -11,19 +11,19 @@ Voting Page
         round will move on to the next round of voting.
     </div>
 
+
+    <div class="aside">
+    <h2>Your Choices</h2>
+    <ul id="choices">
+
     <div class="sticky" id="general">
         <h2>
             <i>You have <small class="counter"></small> choice(s) remaining</i>
         </h2>
     </div>
 
-    <div class="aside">
-    <h2>Your Choices</h2>
-    <ul id="choices">
-
-
+        <button id="submit" type="submit">Submit your vote</button>
     </ul>
-
     </div>
 
 
@@ -46,11 +46,10 @@ Voting Page
                         {% empty %}
                             <li><em>There are currently no candidates available.</em></li>
                         {% endfor %}
-                        <input type="submit" value="Submit your vote">
                     </div>
 
                 </form>
-                <button type="submit">Submit your vote</button>
+
 
             </div>
 {#                <ul>#}
@@ -99,6 +98,12 @@ Voting Page
 
 
 <script type = "text/javascript">
+
+
+document.getElementById('submit').disabled = true;
+document.getElementById('submit').style.backgroundColor = "grey";
+
+
    $(function() {
 	$('#general h2 .counter').text('5');
 
@@ -144,17 +149,31 @@ function updateChoice(state, id) {
         let choiceItem = document.createElement('li');
         let spacer = document.createElement('br');
         let choiceText = document.createTextNode(author);
+        let clearChoiceButton = document.createElement('button');
+        clearChoiceButton.setAttribute('id',id + "button");
+        clearChoiceButton.innerText = 'x';
+        clearChoiceButton.onclick = function(){document.getElementById(id).checked = false; updateCounter(); removeChoice(author, id)};
+        choiceItem.appendChild(clearChoiceButton);
         choiceItem.appendChild(choiceText);
         choiceItem.setAttribute('id', author);
-        choiceItem.setAttribute('style', 'text-align: left;')
-        document.getElementById('choices').appendChild(choiceItem);
-        document.getElementById('choices').appendChild(spacer);
+        choiceItem.setAttribute('style', 'text-align: left;');
+        let choices = document.getElementById('choices');
+        choices.insertBefore(choiceItem, choices.lastElementChild);
+        choices.insertBefore(spacer, choices.lastElementChild);
     }
     else {
-        document.getElementById(author).remove();
-        document.getElementById(id).classList.toggle('checked')
+        removeChoice(author, id)
+
     }
     enforceMaxChoices()
+
+
+}
+
+function removeChoice(liId, checkboxID) {
+    document.getElementById(liId).nextElementSibling.remove();
+    document.getElementById(liId).remove();
+    document.getElementById(checkboxID).classList.toggle('checked');
 
 
 }
@@ -163,6 +182,10 @@ function enforceMaxChoices() {
 
     if ($("#general-content input[name='votebox']:checked").length===5)
     {
+
+        document.getElementById('submit').disabled = false;
+        document.getElementById('submit').style.backgroundColor = '#4b6f31';
+
         let remaining = document.getElementById('general-content').getElementsByClassName('form-check-input');
         for (let i=0; i<remaining.length; i++) {
 
@@ -175,17 +198,17 @@ function enforceMaxChoices() {
 
     }
     else {
+        document.getElementById('submit').disabled = true;
+        document.getElementById('submit').style.backgroundColor = 'grey';
         let remaining = document.getElementById('general-content').getElementsByClassName('form-check-input');
         for (let i=0; i<remaining.length; i++) {
-
             remaining[i].removeAttribute('disabled')
-
-
-
         }
 
     }
 }
+
+
 </script>
 
 

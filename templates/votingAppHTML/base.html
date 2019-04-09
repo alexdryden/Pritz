@@ -1,6 +1,6 @@
 {% load static %}
 <style>
-    * {
+* {
     box-sizing: border-box;
 }
 
@@ -15,7 +15,7 @@ body {
 
 .grid {
     display: grid;
-    grid-template-columns: 100px 1fr 100px 1fr 1fr 100px;
+    grid-template-columns: 50px 1fr 100px 1fr 1fr 50px;
     grid-gap: 20px;
 }
 
@@ -38,9 +38,21 @@ body {
 
 .aside ul {
     background-color: white;
-    margin: 20px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
     padding: 20px;
     font-weight: 600;
+    text-align: center;
+}
+
+.aside button {
+    font-size: 1em;
+    font-weight: 900;
+    color: white;
+    padding: 10px;
+    border-radius: 2em;
+    background-color: #4b6f31;
 }
 
 .intro {
@@ -48,16 +60,6 @@ body {
     margin: 20px;
     padding: 20px;
     font-size: 1.25em;
-}
-
-.sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    background-color: white;
-    grid-column: 1 / -1;
-    padding: 10px;
-    text-align: center;
 }
 
 .form {
@@ -85,13 +87,7 @@ body {
     font-weight: 600;
 }
 
-.form button {
-    font-size: 1em;
-    font-weight: 900;
-    padding: 10px;
-    border-radius: 2em;
-    background-color: white;
-}
+
 </style>
 
 <!DOCTYPE html>

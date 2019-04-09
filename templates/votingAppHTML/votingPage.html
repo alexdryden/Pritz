@@ -41,7 +41,7 @@ Voting Page
                                        id="{{ author.author_first_name }}{{ author.author_last_name }}checkbox"
                                        name="votebox" value="{{ loop.index }}" onchange="updateChoice(this, this.id)">
                                 <br>
-                                <a href="#" target="_blank">Read More</a>
+                                <a href="https://en.wikipedia.org/wiki/{{ author.author_first_name }}_{{ author.author_last_name }}" target="_blank">Read More</a>
                             </div>
                         {% empty %}
                             <li><em>There are currently no candidates available.</em></li>

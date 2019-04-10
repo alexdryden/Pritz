@@ -1,63 +1,3 @@
-{%  extends 'votingAppHTML/base.html' %}
-
-{% block title %}
-Voting Page
-{% endblock %}
-
-{% block content %}
-    <div class="intro">
-        This is the text area where we introduce the first round of voting. Choose 5 candidates out of the 75
-        candidates listed for our Lifetime Achievement Award in military writing and scholarship. The writers chosen in this
-        round will move on to the next round of voting.
-    </div>
-
-
-    <div class="aside">
-    <h2>Your Choices</h2>
-    <ul id="choices">
-
-    <div class="sticky" id="general">
-        <h2>
-            <i>You have <small class="counter"></small> choice(s) remaining</i>
-        </h2>
-    </div>
-
-        <button id="submit" type="submit">Submit your vote</button>
-    </ul>
-    </div>
-
-
-
-            <div id="general-content" class="form">
-                <h2>The Nominees:</h2>
-                <form method="post" action="results.html" style="background-color: #d7cfc6">
-                    <div class="subgrid">
-                        {% for author in author_list %}
-                            <div>
-                                <label for="{{ author.author_first_name }}{{ author.author_last_name }}checkbox">
-                                    {{ author.author_first_name }} {{ author.author_last_name }}
-                                </label>
-                                <input class="form-check-input" type="checkbox"
-                                       id="{{ author.author_first_name }}{{ author.author_last_name }}checkbox"
-                                       name="votebox" value="{{ loop.index }}" onchange="updateChoice(this, this.id)">
-                                <br>
-                                <a href="https://en.wikipedia.org/wiki/{{ author.author_first_name }}_{{ author.author_last_name }}" target="_blank">Read More</a>
-                            </div>
-                        {% empty %}
-                            <li><em>There are currently no candidates available.</em></li>
-                        {% endfor %}
-                    </div>
-
-                </form>
-
-
-            </div>
-
-
-
-<script type = "text/javascript">
-
-
 document.getElementById('submit').disabled = true;
 document.getElementById('submit').style.backgroundColor = "grey";
 
@@ -94,9 +34,7 @@ $(function() {
 
 });
 
-</script>
 
-<script>
 function updateChoice(state, id) {
 
     let author = document.getElementById(id).previousElementSibling.innerHTML;
@@ -165,10 +103,3 @@ function enforceMaxChoices() {
 
     }
 }
-
-
-</script>
-
-
-
-{% endblock %}

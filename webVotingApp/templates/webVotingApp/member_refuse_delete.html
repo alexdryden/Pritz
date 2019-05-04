@@ -1,0 +1,25 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Error Delete Member
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting Member</h2>
+        <p>
+        You may not delete member {{ member }}. This member is currently assigned to the following judges:
+        </p>
+        <ul>
+            {% for judge in judges %}
+                <li>
+                <a href="{{ judge.get_absolute_url }}">{{ judge }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <p>
+        Return to <a href="{% url 'webVotingApp_member_list_urlpattern' %}">Member List</a>.
+        </p>
+    </div>
+{% endblock %}

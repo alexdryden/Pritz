@@ -1,0 +1,15 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Create Judge
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{% url 'webVotingApp_judge_create_urlpattern' %}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Judge</button>
+    </form>
+{% endblock %}

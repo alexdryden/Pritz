@@ -1,0 +1,39 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Member List
+{% endblock %}
+
+{% block create_button %}
+    {% if perms.webVotingApp.add_member %}
+        <a
+                href="{% url 'webVotingApp_member_create_urlpattern' %}"
+                class="button button-primary">
+            Create New Member</a>
+    {% endif %}
+{% endblock %}
+
+{% block org_content %}
+    <h2>Member List</h2>
+    {% if perms.webVotingApp.add_member %}
+        <div class="mobile">
+            <a
+                    href="{% url 'webVotingApp_member_create_urlpattern' %}"
+                    class="button button-primary">
+                Create New Member</a>
+        </div>
+    {% endif %}
+    <ul>
+        {% for member in member_list %}
+            <li>
+                <a href="{{ member.get_absolute_url }}">
+                    {{ member }}</a>
+            </li>
+        {% empty %}
+            <li><em>There are currently no members available.</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+

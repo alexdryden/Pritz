@@ -1,4 +1,4 @@
-{%  extends 'votingAppHTML/base.html' %}
+{%  extends 'webVotingApp/base.html' %}
 
 {% block title %}
 Author List
@@ -12,10 +12,10 @@ Author List
 
         {% for author in author_list %}
             <li>
-                <a href="">{{author}}</a>
+                <a href="{{ author.info_href }}" target="_blank">{{author}}</a>
             </li>
         {% empty %}
-            <li><em>There are currently no courses available.</em></li>
+            <li><em>There are currently no authors available.</em></li>
         {% endfor %}
     </ul>
 

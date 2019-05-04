@@ -1,0 +1,33 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Vote List
+{% endblock %}
+
+{% block create_button %}
+    {% if perms.webVotingApp.add_candidate %}
+      <a href="{% url 'webVotingApp_vote_create_urlpattern' %}"
+         class="button button-primary">
+        Create New Vote</a>
+    {% endif %}
+{% endblock %}
+
+{% block org_content %}
+  <h2>Vote List</h2>
+    {% if perms.webVotingApp.add_candidate %}
+    <div class="mobile">
+      <a href="{% url 'webVotingApp_vote_create_urlpattern' %}"
+         class="button button-primary">
+        Create New Vote</a>
+    </div>
+    {% endif %}
+    <ul>
+        {% for vote in vote_list %}
+            <li>
+                <a href="{{ vote.get_absolute_url }}">{{ vote }}</a>
+            </li>
+        {% empty %}
+            <li><em>There are currently no votes available.</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

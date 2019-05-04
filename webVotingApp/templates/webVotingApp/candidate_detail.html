@@ -1,0 +1,58 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Candidate - {{ candidate }}
+{% endblock %}
+
+{% block content %}
+<article>
+  <div class="row">
+  <div class="offset-by-two eight columns">
+    <h2>{{ candidate }}</h2>
+    <ul class="inline">
+        {% if perms.webVotingApp.change_candidate %}
+        <li>
+          <a href="{{ candidate.get_update_url }}"
+          class="button">
+            Edit Candidate</a></li>
+        {% endif %}
+        {% if perms.webVotingApp.delete_candidate %}
+          <a href="{{ candidate.get_delete_url }}"
+          class="button">
+            Delete Candidate</a></li>
+        {% endif %}
+    </ul>
+    <judge>
+        <table>
+            <tr>
+                <th>First Name:</th>
+                <td>{{ candidate.author.author_first_name }}</td>
+            </tr>
+            <tr>
+                <th>Last Name:</th>
+                <td>{{ candidate.author.author_last_name }}</td>
+            </tr>
+            <tr>
+                <th>Info Page</th>
+                <td><a href="{{ candidate.author.info_href }}">Link</a> </td>
+            </tr>
+        </table>
+    </judge>
+
+    <judge>
+        <h3>Votes</h3>
+        <ul>
+            {% for vote in vote_list %}
+                <li>
+                    <a href="{{ vote.get_absolute_url }}">{{ vote.judge }}</a>
+                </li>
+            {% empty %}
+                <li><em>This candidate does not have any votes recorded in this system.</em></li>
+            {% endfor %}
+        </ul>
+    </judge>
+
+  </div></div> <!-- row -->
+
+</article>
+{% endblock %}

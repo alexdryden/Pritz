@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webVotingApp.apps.WebvotingappConfig',
+    # 'users.apps.UserConfig'
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'templates/static')
+LOGIN_REDIRECT_URL = 'about_urlpattern'
+LOGOUT_REDIRECT_URL = 'login_urlpattern'

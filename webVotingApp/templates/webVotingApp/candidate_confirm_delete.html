@@ -1,0 +1,19 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Delete Candidate
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ candidate.get_delete_url }}"
+        method="post">
+    {% csrf_token %}
+
+    <p>
+        Are you sure that you want to delete candidate {{ candidate }}?
+    </p>
+    <a href="{{ candidate.get_absolute_url }}">Cancel</a>
+    <button type="submit">Delete Candidate</button>
+    </form>
+{% endblock %}

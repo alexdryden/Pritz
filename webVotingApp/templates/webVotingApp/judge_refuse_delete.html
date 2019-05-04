@@ -1,0 +1,25 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Error Delete Judge
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting Judge</h2>
+        <p>
+        You may not delete judge {{ judge }}. This judge is currently assigned to the following judges:
+        </p>
+        <ul>
+            {% for vote in votes %}
+                <li>
+                <a href="{{ votes.get_absolute_url }}">{{ vote }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <p>
+        Return to <a href="{% url 'webVotingApp_judge_list_urlpattern' %}">Judge List</a>.
+        </p>
+    </div>
+{% endblock %}

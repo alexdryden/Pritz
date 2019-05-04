@@ -1,0 +1,36 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Judge List
+{% endblock %}
+
+{% block create_button %}
+    {% if perms.webVotingApp.add_judge %}
+        <a
+                href="{% url 'webVotingApp_judge_create_urlpattern' %}"
+                class="button button-primary">
+            Create New Judge</a>
+    {% endif %}
+{% endblock %}
+
+{% block org_content %}
+    <h2>Judge List</h2>
+    {% if perms.webVotingApp.add_judge %}
+        <div class="mobile">
+            <a
+                    href="{% url 'webVotingApp_judge_create_urlpattern' %}"
+                    class="button button-primary">
+                Create New Judge</a>
+        </div>
+    {% endif %}
+    <ul>
+        {% for judge in judge_list %}
+            <li>
+                <a href="{{ judge.get_absolute_url }}">
+                    {{ judge }}</a>
+            </li>
+        {% empty %}
+            <li><em>There are currently no judges available.</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Vote - {{ vote }}
+{% endblock %}
+
+{% block content %}
+<article>
+  <div class="row">
+  <div class="offset-by-two eight columns">
+    <h2>{{ candidate }}</h2>
+    <ul class="inline">
+        {% if perms.webVotingApp.change_candidate %}
+        <li>
+          <a href="{{ vote.get_update_url }}"
+          class="button">
+            Edit Vote</a></li>
+        {% endif %}
+        {% if perms.webVotingApp.delete_candidate %}
+          <a href="{{ vote.get_delete_url }}"
+          class="button">
+            Delete Vote</a></li>
+        {% endif %}
+    </ul>
+    <judge>
+        <table>
+            <tr>
+                <th>Candidate:</th>
+                <td><a href="{{ vote.candidate.get_absolute_url }}">{{ vote.candidate }}</a></td>
+            </tr>
+            <tr>
+                <th>Judge:</th>
+                <td><a href="{{ vote.judge.get_absolute_url }}">{{ vote.judge }}</a></td>
+            </tr>
+        </table>
+    </judge>
+
+  </div></div> <!-- row -->
+
+</article>
+{% endblock %}

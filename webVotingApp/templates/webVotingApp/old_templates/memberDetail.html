@@ -1,0 +1,26 @@
+{%  extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Member - {{ member }}
+{% endblock %}
+
+{% block content %}
+    <div class="intro">
+        <h2>Member Name: {{ member }}</h2>
+
+    </div>
+
+    <div>
+    <h3>Years Participated</h3>
+        <ul>
+            {% for year in year_list %}
+                <li>
+                    {{ year.year }}
+                </li>
+            {% empty %}
+                <li><em>There are currently no years for this judge.</em></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

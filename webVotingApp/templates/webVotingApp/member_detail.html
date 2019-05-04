@@ -1,0 +1,57 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Member - {{ member }}
+{% endblock %}
+
+{% block content %}
+    <article>
+        <div class="row">
+            <div class="offset-by-two eight columns">
+                <h2>{{ member }}</h2>
+                <ul class="inline">
+                    {% if perms.webVotingApp.change_member %}
+                        <li>
+                            <a href="{{ member.get_update_url }}"
+                               class="button">
+                                Edit Member</a></li>
+                    {% endif %}
+                    {% if perms.webVotingApp.delete_member %}
+                        <li>
+                            <a href="{{ member.get_delete_url }}"
+                               class="button">
+                                Delete Member</a></li>
+                    {% endif %}
+                </ul>
+
+                <judge>
+                    <table>
+                        <tr>
+                            <th>First Name:</th>
+                            <td>{{ member.member_first_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Name:</th>
+                            <td>{{ member.member_last_name }}</td>
+                        </tr>
+                    </table>
+                </judge>
+
+                <judge>
+                    <h3>Judges</h3>
+                    <ul>
+                        {% for judge in judge_list %}
+                            <li>
+                                <a href="{{ judge.get_absolute_url }}">{{ judge }}</a>
+                            </li>
+                        {% empty %}
+                            <li><em>This member has no judging record in this system.</em></li>
+                        {% endfor %}
+                    </ul>
+                </judge>
+
+            </div>
+        </div> <!-- row -->
+
+    </article>
+{% endblock %}

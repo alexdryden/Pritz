@@ -1,5 +1,5 @@
 {% extends 'webVotingApp/base.html' %}
-
+{% load group_test %}
 {% block title %}
     Vote - {{ vote }}
 {% endblock %}
@@ -10,16 +10,18 @@
   <div class="offset-by-two eight columns">
     <h2>{{ candidate }}</h2>
     <ul class="inline">
-        {% if perms.webVotingApp.change_candidate %}
+        {% if user.id == vote.judge.member.user.id or user|has_group:"wva_sysadmin"%}
+
         <li>
           <a href="{{ vote.get_update_url }}"
           class="button">
             Edit Vote</a></li>
-        {% endif %}
-        {% if perms.webVotingApp.delete_candidate %}
           <a href="{{ vote.get_delete_url }}"
           class="button">
             Delete Vote</a></li>
+
+            <li>
+            </li>
         {% endif %}
     </ul>
     <judge>
@@ -39,3 +41,4 @@
 
 </article>
 {% endblock %}
+<script></script>

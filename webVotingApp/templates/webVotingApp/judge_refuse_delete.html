@@ -1,5 +1,5 @@
 {% extends 'webVotingApp/base.html' %}
-
+{% load group_test %}
 {% block title %}
     Error Delete Judge
 {% endblock %}
@@ -8,16 +8,20 @@
     <div>
         <h2>Error Deleting Judge</h2>
         <p>
-        You may not delete judge {{ judge }}. This judge is currently assigned to the following judges:
+        You may not delete judge {{ judge }}. This judge has cast the following votes:
         </p>
+    {% if user|has_group:"wva_sysadmin" %}
+
         <ul>
             {% for vote in votes %}
                 <li>
-                <a href="{{ votes.get_absolute_url }}">{{ vote }}</a>
+                <a href="{{ vote.get_absolute_url }}">{{ vote }}</a>
                 </li>
             {% endfor %}
         </ul>
-        
+        {% elif user|has_group:"wva_coordinator" %}
+        <p>{{ votes.count }} Votes Cast</p>
+    {% endif %}
         <p>
         Return to <a href="{% url 'webVotingApp_judge_list_urlpattern' %}">Judge List</a>.
         </p>

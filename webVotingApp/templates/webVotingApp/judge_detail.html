@@ -1,5 +1,5 @@
 {% extends 'webVotingApp/base.html' %}
-
+{% load group_test %}
 {% block title %}
     Judge - {{ judge }}
 {% endblock %}
@@ -10,12 +10,12 @@
             <div class="offset-by-two eight columns">
                 <h2>{{ judge }}</h2>
                 <ul class="inline">
-                    {% if perms.webVotingApp.change_judge %}
-                    <li>
-                        <a href="{{ judge.get_update_url }}"
-                           class="button">
-                            Edit Judge</a></li>
-                    {% endif %}
+{#                    {% if perms.webVotingApp.change_judge %}#}
+{#                    <li>#}
+{#                        <a href="{{ judge.get_update_url }}"#}
+{#                           class="button">#}
+{#                            Edit Judge</a></li>#}
+{#                    {% endif %}#}
                 {% if perms.webVotingApp.delete_judge %}
                     <li>
                         <a href="{{ judge.get_delete_url }}"
@@ -24,19 +24,12 @@
                 {% endif %}
                 </ul>
 
-                   <judge>
+                   <section>
         <table>
+
             <tr>
-                <th>Course:</th>
-                <td><a href="{{ course.get_absolute_url }}">{{ course }}</a></td>
-            </tr>
-            <tr>
-                <th>Judge Name:</th>
-                <td>{{ judge.judge_name }}</td>
-            </tr>
-            <tr>
-                <th>Semester:</th>
-                <td><a href="{{ semester.get_absolute_url }}">{{ semester }}</a></td>
+                <th>Judge Year:</th>
+                <td>{{ judge.year }}</td>
             </tr>
 
             <tr>
@@ -45,10 +38,30 @@
             </tr>
         </table>
 
-    </judge>
+    </section>
 
-    <judge>
-        <h3>Votes</h3>
+    <section>
+        {% if user|has_group:"wva_coordinator" %}
+            <h3>Votes</h3>
+
+            Total Votes Cast: {{ vote_list.count }}
+
+        {% elif user.id == judge.member.user.id %}
+            <h3>Votes</h3>
+
+             <p>These are your votes:</p>
+            {% for vote in vote_list %}
+                {% if vote.judge.member.user.id == user.id %}
+                <li>
+                    <a href="{{ vote.get_absolute_url }}">{{ vote }}</a>
+                </li>
+                {% endif %}
+            {% empty %}
+                <li><em>There are currently no votes available.</em></li>
+            {% endfor %}
+        {% elif user|has_group:"wva_sysadmin" %}
+            <h3>Votes</h3>
+
         <ul>
             {% for vote in vote_list %}
                 <li>
@@ -57,8 +70,9 @@
             {% empty %}
                 <li><em>There are currently no candidates registered for this judge.</em></li>
             {% endfor %}
+        {% endif %}
         </ul>
-    </judge>
+    </section>
 
             </div>
         </div> <!-- row -->

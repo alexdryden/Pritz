@@ -43,7 +43,7 @@ Voting Page
                                 </label>
                                 <input class="form-check-input" type="checkbox"
                                        id="{{ author.author_first_name }}{{ author.author_last_name }}checkbox"
-                                       name="{{ user.first_name }} {{ user.last_name }} {{ forloop.counter }}" value="{{ author.author_id }}" onchange="updateChoice(this, this.id)">
+                                       name="{{ user.id }} {{ forloop.counter }}" value="{{ author.author_id }}" onchange="updateChoice(this, this.id)">
                                 <br>
                                 <a href={{ author.info_href }} target="_blank">Read More</a>
                             </div>
@@ -137,11 +137,8 @@ function removeChoice(liId, checkboxID) {
 
 function enforceMaxChoices() {
 
-    if ($("input:checked").length===5)
-    {
+    if ($("input:checked").length===5){
 
-        document.getElementById('submit').disabled = false;
-        document.getElementById('submit').style.backgroundColor = '#4b6f31';
 
         let remaining = document.getElementById('general-content').getElementsByClassName('form-check-input');
         for (let i=0; i<remaining.length; i++) {
@@ -154,9 +151,13 @@ function enforceMaxChoices() {
 
 
     }
-    else {
+    else if ($("input:checked").length===0){
         document.getElementById('submit').disabled = true;
         document.getElementById('submit').style.backgroundColor = 'grey';
+    }
+    else {
+        document.getElementById('submit').disabled = false;
+        document.getElementById('submit').style.backgroundColor = '#4b6f31';
         let remaining = document.getElementById('general-content').getElementsByClassName('form-check-input');
         for (let i=0; i<remaining.length; i++) {
             remaining[i].removeAttribute('disabled')

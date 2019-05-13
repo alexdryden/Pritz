@@ -1,0 +1,36 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Author List
+{% endblock %}
+
+{% block create_button %}
+    {% if perms.webVotingApp.add_author %}
+    <a
+        href="{% url 'webVotingApp_author_create_urlpattern'  %}"
+        class="button button-primary">
+      Create New Author</a>
+    {% endif %}
+{% endblock %}
+
+{% block org_content %}
+  <h2>Author List</h2>
+    {% if perms.webVotingApp.add_author %}
+    <div class="mobile">
+      <a
+          href="{% url 'webVotingApp_author_create_urlpattern' %}"
+          class="button button-primary">
+        Create New Author</a>
+    </div>
+    {% endif %}
+  <ul>
+    {% for author in author_list %}
+      <li>
+        <a href="{{ author.get_absolute_url }}">
+          {{ author }}</a>
+      </li>
+    {% empty %}
+      <li><em>There are currently no authors available.</em></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

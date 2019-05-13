@@ -2,10 +2,14 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 import datetime
 
 
+#7 models
 def year_validation(value):
     if value > 2100:
         raise ValidationError(
@@ -19,72 +23,38 @@ def year_validation(value):
         )
 
 
-class Person(models.Model):
-    def get_update_url(self):
-        return reverse(
-            'webVotingApp_person_update_urlpattern',
-            kwargs={'pk': self.pk}
-        )
-    def get_delete_url(self):
-        return reverse(
-            'webVotingApp_person_delete_urlpattern',
-            kwargs={'pk': self.pk}
-        )
-    def get_absolute_url(self):
-        return reverse(
-            'webVotingApp_person_detail_urlpattern',
-            kwargs={'pk': self.pk}
-        )
-    name = models.CharField(max_length=100)
-
-
-class Test(models.Model):
-    def get_update_url(self):
-        return reverse(
-            'webVotingApp_test_update_urlpattern',
-            kwargs={'pk': self.pk}
-        )
-    def get_delete_url(self):
-        return reverse(
-            'webVotingApp_test_delete_urlpattern',
-            kwargs={'pk': self.pk}
-        )
-    def get_absolute_url(self):
-        return reverse(
-            'webVotingApp_test_detail_urlpattern',
-            kwargs={'pk': self.pk}
-        )
-    test_id = models.AutoField(primary_key=True)
-    test_int = models.IntegerField()
-    test_char = models.CharField(max_length=1000)
-
-
 class Member(models.Model):
     def get_update_url(self):
         return reverse(
             'webVotingApp_member_update_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_delete_url(self):
         return reverse(
             'webVotingApp_member_delete_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_absolute_url(self):
         return reverse(
             'webVotingApp_member_detail_urlpattern',
             kwargs={'pk': self.pk}
         )
-    member_id = models.AutoField(primary_key=True)
-    member_last_name = models.CharField(max_length=45)
-    member_first_name = models.CharField(max_length=45)
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
 
     def __str__(self):
-        return '%s, %s' % (self.member_last_name, self.member_first_name)
+        return '%s, %s' % (self.user.last_name, self.user.first_name)
+        # return self.user.last_name
 
-    class Meta:
-        ordering = ['member_last_name', 'member_first_name']
-        unique_together = (('member_last_name', 'member_first_name'),)
+    @receiver(post_save, sender=User)
+    def create_user_member(sender, instance, created, **kwargs):
+        if created:
+            Member.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_member(sender, instance, **kwargs):
+        instance.member.save()
 
 
 class Year(models.Model):
@@ -93,16 +63,13 @@ class Year(models.Model):
             'webVotingApp_year_update_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_delete_url(self):
         return reverse(
             'webVotingApp_year_delete_urlpattern',
             kwargs={'pk': self.pk}
         )
-    def get_absolute_url(self):
-        return reverse(
-            'webVotingApp_year_detail_urlpattern',
-            kwargs={'pk': self.pk}
-        )
+
     def get_absolute_url(self):
         return reverse(
             'webVotingApp_year_detail_urlpattern',
@@ -136,7 +103,7 @@ class Judge(models.Model):
     member = models.ForeignKey(Member, related_name='judge', on_delete=models.PROTECT)
 
     def __str__(self):
-        return '%s, %s (%i)' % (self.member.member_last_name, self.member.member_first_name, self.year.year_name)
+        return '%s, (%i)' % (self.member, self.year.year_name)
 
     class Meta:
         unique_together = (('year', 'member'),)
@@ -149,16 +116,19 @@ class Author(models.Model):
             'webVotingApp_author_update_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_delete_url(self):
         return reverse(
             'webVotingApp_author_delete_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_absolute_url(self):
         return reverse(
             'webVotingApp_author_detail_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     author_id = models.AutoField(primary_key=True)
     author_last_name = models.CharField(max_length=45)
     author_first_name = models.CharField(max_length=45)
@@ -179,16 +149,19 @@ class Candidate(models.Model):
             'webVotingApp_candidate_update_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_delete_url(self):
         return reverse(
             'webVotingApp_candidate_delete_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_absolute_url(self):
         return reverse(
             'webVotingApp_candidate_detail_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     candidate_id = models.AutoField(primary_key=True)
     author = models.ForeignKey(Author, related_name='candidate', on_delete=models.CASCADE)
     year = models.ForeignKey(Year, related_name='candidate', on_delete=models.CASCADE)
@@ -206,16 +179,19 @@ class Vote(models.Model):
             'webVotingApp_vote_update_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_delete_url(self):
         return reverse(
             'webVotingApp_vote_delete_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_absolute_url(self):
         return reverse(
             'webVotingApp_vote_detail_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     vote_id = models.AutoField(primary_key=True)
     judge = models.ForeignKey(Judge, related_name='vote', on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, related_name='vote', on_delete=models.CASCADE)
@@ -224,7 +200,7 @@ class Vote(models.Model):
         return '%s, %s -voted by %s in %s' % (
             self.candidate.author.author_last_name,
             self.candidate.author.author_first_name,
-            self.judge.member.member_last_name,
+            self.judge.member.user.last_name,
             self.candidate.year
         )
 
@@ -232,24 +208,26 @@ class Vote(models.Model):
         unique_together = (('judge', 'candidate'),)
 
 
-
-
 class Rating(models.Model):
+
     def get_update_url(self):
         return reverse(
             'webVotingApp_rating_update_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_delete_url(self):
         return reverse(
             'webVotingApp_rating_delete_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     def get_absolute_url(self):
         return reverse(
             'webVotingApp_rating_detail_urlpattern',
             kwargs={'pk': self.pk}
         )
+
     POOR = '1'
     COMMON = '2'
     GOOD = '3'
@@ -263,6 +241,7 @@ class Rating(models.Model):
         (OUTSTANDING, 'Outstanding'),
         (SUPERLATIVE, 'Superlative')
     )
+
     rating_id = models.AutoField(primary_key=True)
     criteria_1 = models.CharField(max_length=2, choices=rating_choices)
     criteria_2 = models.CharField(max_length=2, choices=rating_choices)
@@ -273,8 +252,8 @@ class Rating(models.Model):
     candidate = models.ForeignKey(Candidate, related_name='rating', on_delete=models.CASCADE)
 
     def avg(self):
-        return (int(self.criteria_1) + int(self.criteria_2) + int(self.criteria_3) + int(self.criteria_4) + int(
-            self.criteria_5)) / 5
+        return (int(self.criteria_1) + int(self.criteria_2) + int(self.criteria_3) + int(self.criteria_4) +
+                int(self.criteria_5)) / 5
 
     def __str__(self):
 
@@ -282,10 +261,12 @@ class Rating(models.Model):
             return str((int(self.criteria_1) + int(self.criteria_2) + int(self.criteria_3) + int(self.criteria_4) + int(
                 self.criteria_5)) / 5)
 
-        return '%s, %s - Avg by %s:%s' % (
+        return '%s, %s - Avg by %s: %s' % (
             self.candidate.author.author_last_name,
             self.candidate.author.author_first_name,
-            self.judge.member.member_last_name,
+            self.judge.member.user.last_name,
             avg()
         )
 
+    class Meta:
+        unique_together = (('judge', 'candidate'),)

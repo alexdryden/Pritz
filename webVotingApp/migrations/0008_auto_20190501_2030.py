@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='year',
             name='year_name',
-            field=models.IntegerField(default=2020, max_length=4, unique=True, validators=[webVotingApp.models.year_validation]),
+            field=models.IntegerField(default=2020, max_length=4, unique=True, validators=[
+                webVotingApp.models.year_validation]),
         ),
     ]

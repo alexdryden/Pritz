@@ -1,5 +1,5 @@
 {% extends 'webVotingApp/base.html' %}
-
+{% load group_test %}
 {% block title %}
     Candidate List
 {% endblock %}
@@ -24,6 +24,7 @@
     </div>
     {% endif %}
   <ul>
+  {% if user|has_group:"wva_member" or user|has_group:"wva_selection_committee" or user|has_group:"wva_selection_committee"%}
     {% for candidate in candidate_list %}
       <li>
         <a href="{{ candidate.get_absolute_url }}">
@@ -33,4 +34,17 @@
       <li><em>There are currently no candidates available.</em></li>
     {% endfor %}
   </ul>
+      {% elif user|has_group:"wva_coordinator" or user|has_group:"wva_sysadmin" %}
+          {% for candidate in candidate_list %}
+      <li>
+        <a href="{{ candidate.get_absolute_url }}">
+          {{ candidate }}</a> <span
+              {% if candidate.vote.count == 0 %} style="color:red;"{% else %} style="color:green"{% endif %}>
+          {{ candidate.vote.count }} Votes</span>
+      </li>
+    {% empty %}
+      <li><em>There are currently no candidates available.</em></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
 {% endblock %}

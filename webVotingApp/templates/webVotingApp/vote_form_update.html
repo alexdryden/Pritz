@@ -12,4 +12,16 @@
         {{ form.as_p }}
         <button type="submit">Update {{ noun }}</button>
     </form>
+    <ul>
+        {% for vote in user_votes %}
+            <li>
+            {{ vote.candidate }}
+            </li>
+        {% endfor %}
+{#            {% for vote in vote %}#}
+{#            <li>#}
+{#            {{ vote.candidate }}#}
+{#            </li>#}
+{#        {% endfor %}#}
+    </ul>
 {% endblock %}

@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load group_test %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,6 +60,11 @@
                         Judges</a></li>
             {% endif %}
 
+            {% if perms.webVotingApp.view_author %}
+                <li>
+                    <a href="{% url 'webVotingApp_author_list_urlpattern' %}">
+                        Authors</a></li>
+            {% endif %}
 
             {% if perms.webVotingApp.view_candidate %}
                 <li>
@@ -71,6 +77,18 @@
                 <li>
                     <a href="{% url 'webVotingApp_vote_list_urlpattern' %}">
                         Votes</a></li>
+            {% endif %}
+
+            {% if user|has_group:"wva_sysadmin" %}
+                <li>
+                    <a href="{% url 'webVotingApp_rating_list_urlpattern' %}">
+                        Rating</a></li>
+            {% endif %}
+
+            {% if user|has_group:"wva_judge" %}
+                <li>
+                    <a href="{% url 'webVotingApp_get_name_urlpattern' %}" target="_blank">
+                        First Round</a></li>
             {% endif %}
 
 
@@ -142,14 +160,12 @@
         <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
             <img alt="Creative Commons License" style="border-width:0"
                  src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"/>
-        </a><br/><span property="dct:title">EZ University Tutorial Examples and Code</span>
-        by
-        <a href="https://www.ligent.net" property="cc:attributionName"
-           rel="cc:attributionURL">Ligent, LLC</a> are licensed under a
+        </a><br/><span property="dct:title">Pritzker Museum Lifetime Achievement Prize Demo Voting System</span>
+         is licensed under a
         <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike
             4.0 International License</a>.
     </p>
-    <p>Portions of the EZ University code are based upon code from
+    <p>Portions of the code are based upon code from
         <a href="https://django-unleashed.com">Django Unleashed</a>,
         <a href="http://getskeleton.com/">Skeleton</a>, and
         <a href="https://necolas.github.io/normalize.css/">Normalize.css</a> and

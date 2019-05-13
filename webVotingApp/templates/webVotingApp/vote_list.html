@@ -1,11 +1,12 @@
 {% extends 'webVotingApp/base.html' %}
+{% load group_test %}
 
 {% block title %}
     Vote List
 {% endblock %}
 
 {% block create_button %}
-    {% if perms.webVotingApp.add_candidate %}
+    {% if user|has_group:"wva_judge" and user_votes.count < 5 %}
       <a href="{% url 'webVotingApp_vote_create_urlpattern' %}"
          class="button button-primary">
         Create New Vote</a>
@@ -13,21 +14,34 @@
 {% endblock %}
 
 {% block org_content %}
-  <h2>Vote List</h2>
-    {% if perms.webVotingApp.add_candidate %}
-    <div class="mobile">
-      <a href="{% url 'webVotingApp_vote_create_urlpattern' %}"
-         class="button button-primary">
-        Create New Vote</a>
-    </div>
-    {% endif %}
+  <h2>Vote List ({{ year }}) </h2>
+
     <ul>
-        {% for vote in vote_list %}
-            <li>
+        {% if user|has_group:"wva_judge" %}
+            <p>These are your {{ user_votes.count }} votes:</p>
+            {% for vote in vote_list %}
+                {% if vote.judge.member.user.id == user.id %}
+                <li>
+                    <a href="{{ vote.get_absolute_url }}">{{ vote }}</a>
+                </li>
+                {% endif %}
+            {% empty %}
+                <li><em>There are currently no votes available.</em></li>
+            {% endfor %}
+        {% elif user|has_group:"wva_coordinator" %}
+            {% for candidate, votes in total_votes.items %}
+
+                <li>{{ candidate }}: {{ votes }}</li>
+            {% endfor %}
+
+        {% elif user|has_group:"wva_sysadmin" %}
+            {% for vote in vote_list %}
+                <li>
                 <a href="{{ vote.get_absolute_url }}">{{ vote }}</a>
-            </li>
-        {% empty %}
-            <li><em>There are currently no votes available.</em></li>
-        {% endfor %}
+                </li>
+            {% endfor %}
+        {% elif user|has_group:"wva_member" %}
+            <h3>Looks like you are not a Judge this year</h3>
+        {% endif %}
     </ul>
 {% endblock %}

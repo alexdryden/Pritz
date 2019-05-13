@@ -1,5 +1,5 @@
 {% extends 'webVotingApp/base.html' %}
-
+{% load group_test %}
 {% block title %}
     Candidate - {{ candidate }}
 {% endblock %}
@@ -10,19 +10,19 @@
   <div class="offset-by-two eight columns">
     <h2>{{ candidate }}</h2>
     <ul class="inline">
-        {% if perms.webVotingApp.change_candidate %}
-        <li>
-          <a href="{{ candidate.get_update_url }}"
-          class="button">
-            Edit Candidate</a></li>
-        {% endif %}
+{#        {% if perms.webVotingApp.change_candidate %}#}
+{#        <li>#}
+{#          <a href="{{ candidate.get_update_url }}"#}
+{#          class="button">#}
+{#            Edit Candidate</a></li>#}
+{#        {% endif %}#}
         {% if perms.webVotingApp.delete_candidate %}
           <a href="{{ candidate.get_delete_url }}"
           class="button">
             Delete Candidate</a></li>
         {% endif %}
     </ul>
-    <judge>
+    <section>
         <table>
             <tr>
                 <th>First Name:</th>
@@ -37,9 +37,11 @@
                 <td><a href="{{ candidate.author.info_href }}">Link</a> </td>
             </tr>
         </table>
-    </judge>
+    </section>
 
-    <judge>
+    <section>
+
+    {% if user|has_group:"wva_sysadmin" %}
         <h3>Votes</h3>
         <ul>
             {% for vote in vote_list %}
@@ -50,7 +52,11 @@
                 <li><em>This candidate does not have any votes recorded in this system.</em></li>
             {% endfor %}
         </ul>
-    </judge>
+    {% elif user|has_group:"wva_coordinator"%}
+        <h3>Votes</h3>
+        <p>Candidate has {{ vote_list.count }} votes</p>
+    {% endif %}
+    </section>
 
   </div></div> <!-- row -->
 

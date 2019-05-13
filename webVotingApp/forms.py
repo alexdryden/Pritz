@@ -1,7 +1,6 @@
-from django.forms import ModelForm, CheckboxSelectMultiple
 from django import forms
 
-from webVotingApp.models import Vote, Judge, Author, Candidate, Member
+from webVotingApp.models import Vote, Judge, Author, Candidate, Member, Rating
 
 
 # class VoteForm(ModelForm):
@@ -77,8 +76,30 @@ class CandidateForm(forms.ModelForm):
         fields = '__all__'
 
 
+class JudgeVoteForm(forms.ModelForm):
+    class Meta:
+
+        model = Vote
+        fields = '__all__'
+        widgets = {'judge': forms.HiddenInput()}
+
+
 class VoteForm(forms.ModelForm):
     class Meta:
 
         model = Vote
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+
+        super(VoteForm, self).__init__(*args, **kwargs)
+
+        # If the user does not belong to a certain group, remove the field
+        self.fields['judge'].queryset = Judge.objects.filter(member__user_id=user.id)
+
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
         fields = '__all__'

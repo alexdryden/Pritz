@@ -1,0 +1,27 @@
+{%  extends 'webVotingApp/base.html' %}
+{% load group_test %}
+{% block title %}
+Vote Recorded Already
+{% endblock %}
+{% block content %}
+
+    <h1>Whoops!</h1>
+    <h2>It looks like your ballot for this round has already been recorded.</h2>
+    <h3><strong>Here are your votes</strong></h3>
+    <ol>
+        {% for vote in vote_list %}
+            {% if vote.judge.member.user.id == user.id %}
+            <li>
+                <a href="{{ vote.get_absolute_url }}">{{ vote }}</a>
+            </li>
+            {% endif %}
+        {% empty %}
+            <li><em>There are currently no votes available. Hmm. That isn't right. Contact site admin for help.</em></li>
+        {% endfor %}
+    </ol>
+    {% if user|has_group:"wva_judge" %}
+      <a href="{% url 'webVotingApp_vote_create_urlpattern' %}"
+         class="button button-primary">
+        Create New Vote</a>
+    {% endif %}
+{% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'webVotingApp/base.html' %}
-
+{%  load group_test %}
 {% block title %}
     Error Delete Candidate
 {% endblock %}
@@ -8,12 +8,14 @@
     <div>
         <h2>Error Deleting Candidate</h2>
         <p>
-        You may not delete candidate {{ candidate }}. This candidate is currently assigned to the following judges:
+        You may not delete candidate {{ candidate }}. This candidate has received the following votes:
         </p>
+    {% if user|has_group:"wva_sysadmin" %}
+
         <ul>
             {% for vote in votes %}
                 <li>
-                <a href="{{ votes.get_absolute_url }}">{{ vote }}</a>
+                <a href="{{ vote.get_absolute_url }}">{{ vote }}</a>
                 </li>
             {% endfor %}
         </ul>
@@ -21,5 +23,9 @@
         <p>
         Return to <a href="{% url 'webVotingApp_candidate_list_urlpattern' %}">Candidate List</a>.
         </p>
+    {% elif user|has_group:"wva_coordinator" %}
+        <p>{{ votes.count }} Votes </p>
+    {% endif %}
+    <a href="{{ candidate.get_absolute_url }}"> Return to Profile </a>
     </div>
 {% endblock %}

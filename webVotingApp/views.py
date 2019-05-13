@@ -89,15 +89,6 @@ def get_name(request):
         return dest
 
 
-# class VotingPage(View):
-#     def get(self, request):
-#         return render(
-#             request,
-#             './webVotingApp/votingPage.html',
-#             {'author_list': Author.objects.all()}
-#         )
-#
-#
 class AuthorList(ListView, LoginRequiredMixin, PermissionRequiredMixin):
     permission_required = 'webVotingApp.view_author'
     model = Author

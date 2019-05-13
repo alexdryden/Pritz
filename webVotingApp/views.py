@@ -56,7 +56,7 @@ def get_name(request):
                 try:
                     member = Member.objects.get(user_id=request.user.id)
                 except ObjectDoesNotExist:
-                    member = Member.objects.create(member_first_name=users_name[0], member_last_name=users_name[1])
+                    member = Member.objects.create(user=request.user)
                     member.save()
                 try:
                     judge = Judge.objects.get(year=year, member=member)
@@ -65,14 +65,16 @@ def get_name(request):
                     judge.save()
 
                 for selection in response[1:]:
-                    author = Author.objects.get(author_id=selection[1])
-                    try:
-                        candidate = Candidate.objects.get(author=author, year=year)
-                    except ObjectDoesNotExist:
-                        candidate = Candidate.objects.create(author=author, year=year)
-                        candidate.save()
-                    vote = Vote.objects.create(candidate=candidate, judge=judge)
-                    vote.save()
+                    if selection[1] is int:
+
+                        author = Author.objects.get(author_id=selection[1])
+                        try:
+                            candidate = Candidate.objects.get(author=author, year=year)
+                        except ObjectDoesNotExist:
+                            candidate = Candidate.objects.create(author=author, year=year)
+                            candidate.save()
+                        vote = Vote.objects.create(candidate=candidate, judge=judge)
+                        vote.save()
 
             return HttpResponseRedirect(reverse('webVotingApp_thank_you_urlpattern'))
     else:

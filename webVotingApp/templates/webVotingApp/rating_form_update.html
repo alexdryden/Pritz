@@ -1,0 +1,27 @@
+{%  extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Update
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ rating.get_update_url }}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update {{ noun }}</button>
+    </form>
+    <ul>
+        {% for rating in user_ratings %}
+            <li>
+            {{ rating.candidate }}
+            </li>
+        {% endfor %}
+{#            {% for rating in rating %}#}
+{#            <li>#}
+{#            {{ rating.candidate }}#}
+{#            </li>#}
+{#        {% endfor %}#}
+    </ul>
+{% endblock %}

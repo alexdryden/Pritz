@@ -1,0 +1,59 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Author - {{ author }}
+{% endblock %}
+
+{% block content %}
+<article>
+  <div class="row">
+  <div class="offset-by-two eight columns">
+    <h2>{{ author }}</h2>
+    <ul class="inline">
+        {% if perms.webVotingApp.change_author %}
+        <li>
+          <a href="{{ author.get_update_url }}"
+          class="button">
+            Edit Author</a></li>
+        {% endif %}
+        {% if perms.webVotingApp.delete_author %}
+          <a href="{{ author.get_delete_url }}"
+          class="button">
+            Delete Author</a></li>
+        {% endif %}
+    </ul>
+    <section>
+        <table>
+            <tr>
+                <th>First Name:</th>
+                <td>{{ author.author_first_name }}</td>
+            </tr>
+            <tr>
+                <th>Last Name:</th>
+                <td>{{ author.author_last_name }}</td>
+            </tr>
+            <tr>
+                <th>Info Page</th>
+                <td><a href="{{author.info_href }}">Link</a> </td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h3>Years</h3>
+        <p>
+         {{ author }} Has been a candidate in the following years:
+        </p>
+        <ul>
+            {% for candidate in candidates %}
+                <li>
+                <a href="{{ candidate.get_absolute_url }}">{{ candidate.year }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+  </div></div> <!-- row -->
+
+</article>
+{% endblock %}

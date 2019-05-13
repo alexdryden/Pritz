@@ -1,0 +1,19 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Delete Rating
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ rating.get_delete_url }}"
+        method="post">
+    {% csrf_token %}
+
+    <p>
+        Are you sure that you want to delete rating {{ rating }}?
+    </p>
+    <a href="{{ rating.get_absolute_url }}">Cancel</a>
+    <button type="submit">Delete Rating</button>
+    </form>
+{% endblock %}

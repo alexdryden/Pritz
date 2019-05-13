@@ -1,0 +1,52 @@
+{% extends 'webVotingApp/base.html' %}
+{% load group_test %}
+{% block title %}
+    Rating - {{ rating }}
+{% endblock %}
+
+{% block content %}
+<article>
+  <div class="row">
+  <div class="offset-by-two eight columns">
+    <h2>{{ candidate }}</h2>
+    <ul class="inline">
+        {% if user.id == rating.judge.member.user.id or user|has_group:"wva_sysadmin"%}
+
+        <li>
+          <a href="{{ rating.get_update_url }}"
+          class="button">
+            Edit Rating</a></li>
+          <a href="{{ rating.get_delete_url }}"
+          class="button">
+            Delete Rating</a></li>
+
+            <li>
+            </li>
+        {% endif %}
+    </ul>
+    <judge>
+        <table>
+            <tr>
+                <th>Candidate:</th>
+                <td><a href="{{ rating.candidate.get_absolute_url }}">{{ rating.candidate }}</a></td>
+            </tr>
+            <tr>
+                <th>Judge:</th>
+                <td><a href="{{ rating.judge.get_absolute_url }}">{{ rating.judge }}</a></td>
+            </tr>
+            <tr>
+                <th>Average:</th>
+                <td>{{ rating.avg }}</td>
+            </tr>
+{#            <tr>#}
+{#                <th>Criteria 1:</th>#}
+{#                <td>{{ rating.criteria_1 }}</td>#}
+{#            </tr>#}
+        </table>
+    </judge>
+
+  </div></div> <!-- row -->
+
+</article>
+{% endblock %}
+<script></script>

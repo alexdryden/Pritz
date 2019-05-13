@@ -1,0 +1,22 @@
+{%  extends 'webVotingApp/../base.html' %}
+
+{% block title %}
+Judge List
+{% endblock %}
+
+{% block content %}
+
+    <h2>Judges</h2>
+
+    <ul>
+
+        {% for judge in judge_list %}
+            <li>
+                <a href="">{{judge}}</a>
+            </li>
+        {% empty %}
+            <li><em>There are currently no courses available.</em></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

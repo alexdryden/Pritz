@@ -1,0 +1,15 @@
+{%  extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Update
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ author.get_update_url }}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update {{ noun }}</button>
+    </form>
+{% endblock %}

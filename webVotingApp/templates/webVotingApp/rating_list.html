@@ -1,0 +1,45 @@
+{% extends 'webVotingApp/base.html' %}
+{% load group_test %}
+
+{% block title %}
+    Rating List
+{% endblock %}
+
+{% block create_button %}
+    {% if user|has_group:"wva_sysadmin"  %}
+      <a href="{% url 'webVotingApp_rating_create_urlpattern' %}"
+         class="button button-primary">
+        Create New Rating</a>
+    {% endif %}
+{% endblock %}
+
+{% block org_content %}
+  <h2>Rating List ({{ year }}) </h2>
+
+    <ul>
+        {% if user|has_group:"wva_judge" %}
+            <p>These are your {{ user_ratings.count }} ratings:</p>
+            {% for rating in rating_list %}
+                {% if rating.judge.member.user.id == user.id %}
+                <li>
+                    <a href="{{ rating.get_absolute_url }}">{{ rating }}</a>
+                </li>
+                {% endif %}
+            {% empty %}
+                <li><em>There are currently no ratings available.</em></li>
+            {% endfor %}
+        {% elif user|has_group:"wva_coordinator" %}
+            {% for candidate, ratings in total_ratings.items %}
+
+                <li>{{ candidate }}: {{ ratings }}</li>
+            {% endfor %}
+
+        {% elif user|has_group:"wva_sysadmin" %}
+            {% for rating in rating_list %}
+                <li>
+                <a href="{{ rating.get_absolute_url }}">{{ rating }}</a>
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+{% endblock %}

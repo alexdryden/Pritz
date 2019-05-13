@@ -1,0 +1,25 @@
+{% extends 'webVotingApp/base.html' %}
+
+{% block title %}
+    Error Delete Author
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting Author</h2>
+        <p>
+        You may not delete author {{ author }}. This author is currently a candidate in the following years:
+        </p>
+        <ul>
+            {% for candidate in candidates %}
+                <li>
+                <a href="{{ candidate.get_absolute_url }}">{{ candidate.year }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <p>
+        Return to <a href="{% url 'webVotingApp_author_list_urlpattern' %}">Author List</a>.
+        </p>
+    </div>
+{% endblock %}
